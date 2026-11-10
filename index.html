@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumário — Projetos Corrigidos | Apostila de Depuração</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-2: #16233a;
+    --border: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --primary: #38bdf8;
+    --violet: #a78bfa;
+    --pink: #f472b6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --code-bg: #0b1220;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #1e293b 0%, var(--bg) 55%);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 32px 16px 64px;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  ul { list-style: none; }
+  .container { width: 100%; max-width: 960px; margin: 0 auto; }
+
+  /* ===== HEADER ===== */
+  .hero {
+    text-align: center;
+    padding: 8px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--primary);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+  }
+  .hero h1 { font-size: clamp(1.5rem, 5vw, 2.3rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+  .hero h1 span { color: var(--primary); }
+  .hero p { color: var(--muted); font-size: 0.95rem; max-width: 660px; margin: 0 auto; }
+
+  /* ===== GUIA ===== */
+  .guia {
+    background: var(--card-2);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-left: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 40px;
+  }
+  .guia h2 { font-size: 1rem; color: var(--primary); margin-bottom: 8px; }
+  .guia ol { margin-left: 20px; color: #cbd5e1; font-size: 0.9rem; }
+  .guia ol li { margin-bottom: 4px; }
+  .guia code {
+    background: var(--code-bg);
+    color: #bae6fd;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+  }
+
+  /* ===== SEÇÕES ===== */
+  .section { margin-bottom: 44px; }
+  .section-head { margin-bottom: 20px; }
+  .section-head h2 {
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .section-head h2::before {
+    content: "";
+    width: 5px;
+    height: 22px;
+    border-radius: 3px;
+    background: var(--primary);
+    display: inline-block;
+  }
+  .section-head p { color: var(--muted); font-size: 0.9rem; margin-left: 15px; }
+
+  /* ===== TABELA DAS 5 FALHAS ===== */
+  .tabela-wrap {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+    background: var(--card);
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; font-size: 0.85rem; }
+  th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: #16233a; color: var(--primary); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: #fff; }
+  td a { color: var(--primary); text-decoration: none; font-weight: 700; white-space: nowrap; }
+  td a:hover { text-decoration: underline; }
+  code {
+    background: var(--code-bg);
+    color: #bae6fd;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+  }
+
+  /* ===== CARDS ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+  }
+  .card.aurora { border-top: 4px solid var(--violet); }
+  .card.lumina { border-top: 4px solid var(--pink); }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .num { font-size: 0.72rem; font-weight: 800; color: var(--muted); letter-spacing: 1px; }
+  .status {
+    background: rgba(34, 197, 94, 0.14);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .card h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .card .desc { color: var(--muted); font-size: 0.87rem; margin-bottom: 14px; }
+
+  .fixes { display: grid; gap: 7px; margin-bottom: 20px; }
+  .fixes li { color: #cbd5e1; font-size: 0.84rem; padding-left: 20px; position: relative; }
+  .fixes li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 800;
+  }
+
+  .btn {
+    display: block;
+    margin-top: auto;
+    text-align: center;
+    text-decoration: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.88rem;
+    background: var(--code-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    transition: 0.2s;
+  }
+  .btn:hover { border-color: var(--primary); color: var(--primary); }
+  .card.aurora .btn:hover { border-color: var(--violet); color: var(--violet); }
+  .card.lumina .btn:hover { border-color: var(--pink); color: var(--pink); }
+
+  footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    margin-top: 44px;
+    padding-top: 20px;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 22px 12px 48px; }
+    .card { padding: 18px; }
+    .section-head h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="hero">
+    <span class="hero-badge">TEMA 09 &bull; APOSTILA DE DEPURAÇÃO</span>
+    <h1>Sumário dos <span>Projetos Corrigidos</span></h1>
+    <p>As 5 falhas ensinadas na apostila, a causa de cada uma e os projetos Aurora e Lumina já corrigidos e funcionando.</p>
+  </header>
+
+  <section class="guia">
+    <h2>Como testar</h2>
+    <ol>
+      <li>Confira abaixo o resumo das 5 falhas e a correção aplicada em cada uma.</li>
+      <li>Clique em <strong>Abrir projeto</strong> para testar o Aurora ou a Lumina.</li>
+      <li>Pressione <strong>F12</strong> e confira o console: não deve aparecer nenhum erro em vermelho.</li>
+      <li>Reduza a janela para <code>320px</code> e <code>375px</code> para validar a responsividade.</li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>As 5 falhas da apostila</h2>
+      <p>Resumo de cada laboratório, o erro que aparecia e a correção que deixou o código funcionando.</p>
+    </div>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lab</th>
+            <th>Erro encontrado</th>
+            <th>Correção aplicada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong><br><a href="../apostila.html#lab1">Ver lab</a></td>
+            <td>O <code>onclick</code> chamava uma função com nome diferente do declarado no script, gerando <code>ReferenceError</code>.</td>
+            <td>O nome chamado no HTML passou a ser igual ao da função: <code>assarPizza()</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong><br><a href="../apostila.html#lab2">Ver lab</a></td>
+            <td>O <code>getElementById</code> buscava um ID inexistente e retornava <code>null</code> ao ler <code>.value</code>.</td>
+            <td>A busca passou a usar o ID real do campo: <code>getElementById("sabor")</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong><br><a href="../apostila.html#lab3">Ver lab</a></td>
+            <td>O card usava o evento <code>click</code> e não tinha <code>mouseout</code>, ficando preso na cor de destaque.</td>
+            <td>Foram registrados <code>mouseover</code> para destacar e <code>mouseout</code> para restaurar.</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong><br><a href="../apostila.html#lab4">Ver lab</a></td>
+            <td>A função de cálculo não tinha <code>return</code>, devolvia <code>undefined</code> e quebrava no <code>.toFixed()</code>.</td>
+            <td>Foi adicionado <code>return total;</code> antes do fechamento da função.</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong><br><a href="../apostila.html#lab5">Ver lab</a></td>
+            <td>O laço usava <code>i &lt; 0</code>, começava falso e o contador ficava travado em zero.</td>
+            <td>A condição passou a percorrer o texto: <code>i &lt; texto.length</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Projetos corrigidos e funcionando</h2>
+      <p>As duas páginas que aplicam as correções da apostila.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card aurora">
+        <div class="card-top">
+          <span class="num">PROJETO 01</span>
+          <span class="status">Corrigido e funcionando</span>
+        </div>
+        <h3>Projeto Aurora</h3>
+        <p class="desc">Landing page de um estúdio de design com botão de orçamento, saudação, card de preço, desconto e contador.</p>
+        <ul class="fixes">
+          <li><code>onclick</code> corrigido para chamar <code>solicitarOrcamento()</code></li>
+          <li>Busca pelo ID correto <code>nome</code> no campo de saudação</li>
+          <li>Card com <code>mouseover</code> e <code>mouseout</code> funcionando</li>
+          <li>Adicionado <code>return precoFinal</code> no cálculo de desconto</li>
+          <li>Laço do contador agora usa <code>i &lt; texto.length</code></li>
+        </ul>
+        <a class="btn" href="aurora.html" target="_blank" rel="noopener">Abrir projeto</a>
+      </article>
+
+      <article class="card lumina">
+        <div class="card-top">
+          <span class="num">PROJETO 02</span>
+          <span class="status">Corrigido e funcionando</span>
+        </div>
+        <h3>Livraria Lumina</h3>
+        <p class="desc">Portal de livraria com catálogo, clube do livro, cupom de desconto, saudação ao leitor e contador de resenha.</p>
+        <ul class="fixes">
+          <li><code>onclick</code> corrigido para chamar <code>obterCatalogo()</code></li>
+          <li>Busca pelo ID correto <code>leitor</code> no campo de nome</li>
+          <li>Card do clube com <code>mouseover</code> e <code>mouseout</code></li>
+          <li>Adicionado <code>return valorFinal</code> no cupom</li>
+          <li>Laço do contador agora usa <code>i &lt; texto.length</code></li>
+        </ul>
+        <a class="btn" href="lumina.html" target="_blank" rel="noopener">Abrir projeto</a>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <p>Tema 09 &bull; JavaScript — Depuração, Biblioteca e Desafios &bull; Sumário dos projetos corrigidos.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
